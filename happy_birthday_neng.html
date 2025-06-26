@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Happy Birthday Neng!</title>
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=EB+Garamond:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            height: 100vh;
+            overflow: hidden;
+            background: linear-gradient(135deg, #ffcce6, #f8e1ff);
+            font-family: 'Dancing Script', cursive;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            perspective: 1000px;
+        }
+
+        /* Smooth falling elements */
+        .falling {
+            position: absolute;
+            z-index: 1;
+            top: -100px;
+            will-change: transform, opacity;
+            animation: falling linear infinite both;
+        }
+
+        @keyframes falling {
+            0% { 
+                transform: translateY(0) rotate(0deg) translateZ(0);
+                opacity: 1;
+            }
+            100% { 
+                transform: translateY(calc(100vh + 100px)) rotate(360deg) translateZ(0);
+                opacity: 0;
+            }
+        }
+
+        /* Envelope container - perfectly centered */
+        .envelope-container {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 10;
+            width: 85vw;
+            max-width: 350px;
+            aspect-ratio: 1/0.6;
+            opacity: 0;
+            transform: translate(-50%, -50%) scale(0.5);
+            animation: envelopeAppear 1s ease-out 2s forwards;
+        }
+
+        @keyframes envelopeAppear {
+            0% {
+                opacity: 0;
+                transform: translate(-50%, -50%) scale(0.5);
+            }
+            100% {
+                opacity: 1;
+                transform: translate(-50%, -50%) scale(1);
+            }
+        }
+
+        .envelope {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            background: #ff6b9d;
+            border-radius: 8px;
+            cursor: pointer;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.2);
+            transition: all 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            transform-style: preserve-3d;
+        }
+
+        .envelope:before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 58.33%;
+            background: #ff4785;
+            clip-path: polygon(0 0, 50% 100%, 100% 0);
+            transform-origin: top;
+            transform: rotateX(0deg);
+            transition: all 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            backface-visibility: hidden;
+            z-index: 2;
+            box-sizing: border-box;
+        }
+
+        .envelope.open {
+            transform: translateY(20px);
+        }
+
+        .envelope.open:before {
+            transform: rotateX(180deg);
+        }
+
+        .envelope:after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 41.66%;
+            background: #e63e7a;
+            clip-path: polygon(0 100%, 50% 0, 100% 100%);
+            box-sizing: border-box;
+        }
+
+        /* Message card - perfectly centered */
+        .message {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 85vw;
+            max-width: 350px;
+            height: auto;
+            min-height: 50vh;
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 15px 40px rgba(0,0,0,0.2);
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            z-index: 5;
+            opacity: 0;
+            transform: translate(-50%, -50%) scale(0.9);
+            transition: all 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            backface-visibility: hidden;
+            will-change: transform, opacity;
+            transform-origin: center;
+            text-align: center;
+        }
+
+        .message.visible {
+            opacity: 1;
+            transform: translate(-50%, -50%) scale(1);
+            display: flex;
+        }
+
+        .message-content {
+            text-align: center;
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .wishes {
+            font-family: 'EB Garamond', Garamond, serif;
+            font-size: 16px;
+            color: #666;
+            margin: 15px 0 5px 0;
+            line-height: 1.5;
+            width: 100%;
+            font-weight: 500;
+            letter-spacing: 0.3px;
+        }
+
+        .emj-wishes {
+            font-size: 24px;
+            margin: 5px 0 15px 0;
+            display: flex;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .emj-wishes span {
+            display: inline-block;
+            animation: wave 2s infinite ease-in-out;
+            transform-origin: bottom center;
+        }
+
+        .emj-wishes span:nth-child(1) { animation-delay: 0.1s; }
+        .emj-wishes span:nth-child(2) { animation-delay: 0.3s; }
+        .emj-wishes span:nth-child(3) { animation-delay: 0.5s; }
+        .emj-wishes span:nth-child(4) { animation-delay: 0.7s; }
+
+        @keyframes wave {
+            0%, 100% { transform: rotate(-5deg) translateY(0); }
+            50% { transform: rotate(5deg) translateY(-5px); }
+        }
+
+        /* Photo container */
+        .photo-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+            margin: 15px 0;
+        }
+
+        .photo {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            background-size: cover;
+            background-position: center;
+            border: 4px solid #ff6b9d;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.15);
+            animation: float 4s ease-in-out infinite;
+            will-change: transform;
+            object-fit: cover;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0) rotate(-1deg); }
+            50% { transform: translateY(-15px) rotate(1deg); }
+        }
+
+        /* Music player */
+        .music-control {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: white;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            box-shadow: 0 3px 15px rgba(0,0,0,0.15);
+            z-index: 100;
+            transition: all 0.3s ease;
+            font-size: 22px;
+            opacity: 0;
+            animation: fadeIn 0.5s ease-out 2.5s forwards;
+        }
+
+        @keyframes fadeIn {
+            to { opacity: 1; }
+        }
+
+        .music-control:hover {
+            transform: scale(1.1);
+            box-shadow: 0 5px 20px rgba(0,0,0,0.25);
+        }
+
+        /* Performance optimizations */
+        * {
+            backface-visibility: hidden;
+            -webkit-backface-visibility: hidden;
+        }
+
+        /* Larger screens */
+        @media (min-width: 768px) {
+            .envelope-container, .message {
+                width: 60vw;
+                max-width: 400px;
+            }
+            
+            .wishes {
+                font-size: 18px;
+            }
+            
+            .emj-wishes {
+                font-size: 28px;
+            }
+            
+            .photo {
+                width: 150px;
+                height: 150px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="envelope-container">
+        <div class="envelope"></div>
+    </div>
+    
+    <div class="message">
+        <div class="message-content">
+            <h1>Happy Birthday Neng!</h1>
+            <div class="photo-container">
+                <img class="photo" src="neng.jpg" alt="Birthday Photo">
+            </div>
+            <p class="wishes">
+                On this special day, may your life be filled with joy, love, and all the beautiful things you deserve!
+            </p>
+            <div class="emj-wishes">
+                <span>💖</span>
+                <span>🎂</span>
+                <span>🎁</span>
+                <span>💖</span>
+            </div>
+        </div>
+    </div>
+
+    <div class="music-control">🎵</div>
+
+    <audio id="bgMusic" loop>
+        <source src="happy-birthday.mp3" type="audio/mpeg">
+        Your browser does not support the audio element.
+    </audio>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Create falling elements immediately
+            function createFallingElements() {
+                const types = ['🎈', '🌸', '✨', '🎀', '💖'];
+                const colors = ['#ff6b9d', '#ffb6c1', '#ffd700', '#c9a0ff', '#a2edff'];
+                
+                for (let i = 0; i < 80; i++) {
+                    const element = document.createElement('div');
+                    element.className = 'falling';
+                    element.innerHTML = types[Math.floor(Math.random() * types.length)];
+                    element.style.left = Math.random() * 100 + 'vw';
+                    
+                    const duration = (Math.random() * 3 + 5);
+                    element.style.animationDuration = duration + 's';
+                    
+                    const size = (Math.random() * 20 + 15);
+                    element.style.fontSize = size + 'px';
+                    
+                    element.style.opacity = Math.random() * 0.7 + 0.3;
+                    element.style.animationDelay = (Math.random() * 10) + 's';
+                    
+                    if (Math.random() > 0.3) {
+                        element.style.color = colors[Math.floor(Math.random() * colors.length)];
+                        element.style.textShadow = '0 2px 4px rgba(0,0,0,0.1)';
+                    }
+                    
+                    document.body.appendChild(element);
+                }
+            }
+
+            // Start animations
+            createFallingElements();
+
+            // Envelope interaction
+            const envelope = document.querySelector('.envelope');
+            const envelopeContainer = document.querySelector('.envelope-container');
+            const message = document.querySelector('.message');
+            
+            envelope.addEventListener('click', function() {
+                this.classList.add('open');
+                
+                setTimeout(() => {
+                    envelopeContainer.style.opacity = '0';
+                    envelopeContainer.style.transform = 'translate(-50%, -50%) translateY(30px) scale(0.9)';
+                }, 400);
+                
+                setTimeout(() => {
+                    envelopeContainer.style.display = 'none';
+                    message.classList.add('visible');
+                }, 800);
+            });
+
+            // Music control
+            const music = document.getElementById('bgMusic');
+            const musicControl = document.querySelector('.music-control');
+            let musicPlaying = false;
+
+            musicControl.addEventListener('click', function() {
+                if (musicPlaying) {
+                    music.pause();
+                    this.textContent = '🎵';
+                    this.style.transform = 'scale(0.9)';
+                    setTimeout(() => {
+                        this.textContent = '🎵';
+                        this.style.transform = 'scale(1)';
+                    }, 150);
+                } else {
+                    music.play().catch(e => {
+                        musicControl.textContent = '🔇';
+                        alert('Please click the music button to play!');
+                    });
+                    this.textContent = '🔊';
+                    this.style.transform = 'scale(1.1)';
+                }
+                musicPlaying = !musicPlaying;
+            });
+        });
+    </script>
+</body>
+</html>
