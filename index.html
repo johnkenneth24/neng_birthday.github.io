@@ -7,18 +7,24 @@
     <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=EB+Garamond:wght@400;500&display=swap" rel="stylesheet">
     <style>
         body {
-            margin: 0;
-            padding: 0;
-            height: 100vh;
-            overflow: hidden;
-            background: linear-gradient(135deg, #ffcce6, #f8e1ff);
-            font-family: 'Dancing Script', cursive;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            position: relative;
-            perspective: 1000px;
+             margin: 0;
+    padding: 0;
+    min-height: 100vh; /* Changed from height */
+    background: linear-gradient(135deg, #ffcce6, #f8e1ff);
+    font-family: 'Dancing Script', cursive;
+    display: flex;
+    flex-direction: column; /* Added for scrollable content */
+    align-items: center;
+    position: relative;
         }
+
+        .content-wrapper {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 50px 0;
+}
 
         /* Smooth falling elements */
         .falling {
@@ -42,9 +48,8 @@
 
         /* Envelope container - perfectly centered */
         .envelope-container {
-            position: absolute;
-            top: 50%;
-            left: 50%;
+            position: relative;
+            margin: 50px 0;
             transform: translate(-50%, -50%);
             z-index: 10;
             width: 85vw;
@@ -262,7 +267,7 @@
         }
     </style>
 </head>
-<body>
+<body class="content-wrapper">
     <div class="envelope-container">
         <div class="envelope"></div>
     </div>
